@@ -1,14 +1,12 @@
 package com.example.authjava.Repositories;
 
 import com.example.authjava.Data.Models.RoleModel;
-import com.example.authjava.Data.Models.RoleUserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface RoleRepository extends JpaRepository<RoleModel, Long> {
     RoleModel findByName(String name);
@@ -34,4 +32,12 @@ public interface RoleRepository extends JpaRepository<RoleModel, Long> {
                 "WHERE ur.user_id=:userId AND ur.role_id=r.id"
     )
     ArrayList<RoleModel> findUserRoles(@Param("userId") Long userId);
+
+    @Query(
+        nativeQuery = true,
+        value = "SELECT DISTINCT r.name " +
+                "FROM roles as r "
+    )
+    ArrayList<String> findAllRoles();
+    
 }
